@@ -97,6 +97,7 @@ void UMultiplayerGameInstance::CreateServer()
 
 	sessionSettings.bShouldAdvertise = true;
 	sessionSettings.bAllowInvites = true;
+	sessionSettings.bUsePresence = true;
 	sessionSettings.NumPublicConnections = 5;
 
 	SessionInterface->CreateSession(0, FName("My session"), sessionSettings);
