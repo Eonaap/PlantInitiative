@@ -61,11 +61,14 @@ void UMultiplayerGameInstance::OnFindSessionComplete(bool succeeded)
 void UMultiplayerGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type result)
 {
 	UE_LOG(LogTemp, Warning, TEXT("OnJoinSessionComplete"));
+	GEngine->AddOnScreenDebugMessage(-1, 15.5f, FColor::Red, TEXT("JoinSessionComplete"));
 	if (APlayerController* PController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.5f, FColor::Red, TEXT("PlayerControllerFound"));
 		FString joinAdress = "";
 		SessionInterface->GetResolvedConnectString(SessionName, joinAdress);
 
+		GEngine->AddOnScreenDebugMessage(-1, 15.5f, FColor::Red, TEXT("JoinAdress equals: ") + joinAdress);
 		if (joinAdress != "")
 			PController->ClientTravel(joinAdress, ETravelType::TRAVEL_Absolute);
 	}
