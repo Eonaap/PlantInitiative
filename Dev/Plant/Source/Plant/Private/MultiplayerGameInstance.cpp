@@ -39,15 +39,16 @@ void UMultiplayerGameInstance::OnCreateSessionComplete(FName serverName, bool su
 void UMultiplayerGameInstance::OnFindSessionComplete(bool succeeded)
 {
 	UE_LOG(LogTemp, Warning, TEXT("OnFindSessionComplete, Succeeded: %d"), succeeded);
-	
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("FindSessionComplete"));
 	if (succeeded)
 	{
 		TArray<FOnlineSessionSearchResult> searchResults = sessionSearch->SearchResults;
 		UE_LOG(LogTemp, Warning, TEXT("Searchresults, server count: %d"), searchResults.Num());
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Succeeded founds sessions: ") + FString::FromInt(searchResults.Num()));
 		
 		//Join first server (0)
 		if (searchResults.Num())
-			SessionInterface->JoinSession(0, "My session", searchResults[0]);
+			SessionInterface->JoinSession(0, "PlantSession", searchResults[0]);
 	}
 
 }
@@ -57,6 +58,7 @@ void UMultiplayerGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinS
 	UE_LOG(LogTemp, Warning, TEXT("OnJoinSessionComplete"));
 	if (APlayerController* PController = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Controller found, player can start client travel"));
 		FString joinAdress = "";
 		SessionInterface->GetResolvedConnectString(SessionName, joinAdress);
 
@@ -82,13 +84,14 @@ void UMultiplayerGameInstance::CreateServer()
 	sessionSettings.bAllowInvites = true;
 	sessionSettings.NumPublicConnections = 5;
 
-	SessionInterface->CreateSession(0, FName("My session"), sessionSettings);
+	SessionInterface->CreateSession(0, FName("PlantSession"), sessionSettings);
 
 }
 
 void UMultiplayerGameInstance::JoinServer()
 {
 	UE_LOG(LogTemp, Warning, TEXT("JoinServer"));
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Join server"));
 
 	sessionSearch = MakeShareable(new FOnlineSessionSearch());
 	if (IOnlineSubsystem::Get()->GetSubsystemName() != "NULL")
