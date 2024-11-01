@@ -33,7 +33,8 @@ void UMultiplayerGameInstance::OnCreateSessionComplete(FName sessionName, bool s
 
 	if (succeeded)
 	{
-		GetWorld()->ServerTravel("/Game/EnvMapBlockout_0?listen");
+		UE_LOG(LogTemp, Warning, TEXT("succeeded"));
+		GetWorld()->ServerTravel("/Game/Maps/EnvMapBlockout_0?listen");
 	}
 }
 
@@ -114,6 +115,8 @@ void UMultiplayerGameInstance::CreateServer(FString serverName, FString hostName
 
 	sessionSettings.Set(FName("SERVER_NAME_KEY"), serverName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 	sessionSettings.Set(FName("SERVER_HOSTNAME_KEY"), hostName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
+
+	UE_LOG(LogTemp, Warning, TEXT("Creating session"));
 
 	SessionInterface->CreateSession(0, MySessionName, sessionSettings);
 
